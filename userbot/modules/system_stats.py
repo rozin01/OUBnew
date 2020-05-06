@@ -19,16 +19,9 @@ from userbot.events import register
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 # ============================================
 
-MODULESTR = [
-    "0"
-]
 
 @register(outgoing=True, pattern="^.sysd$")
 async def sysdetails(sysd):
-    #Prevent Channel Bug to run sysd commad
-    if sysd.is_channel and not sysd.is_group:
-        await sysd.edit("`sysd Commad isn't permitted on channels`")
-        return
     """ For .sysd command, get system info using neofetch. """
     if not sysd.text[0].isalpha() and sysd.text[0] not in ("/", "#", "@", "!"):
         try:
@@ -45,47 +38,12 @@ async def sysdetails(sysd):
 
             await sysd.edit("`" + result + "`")
         except FileNotFoundError:
-            await sysd.edit("`Install neofetch first !!`")
+            await sysd.edit("`Hella install neofetch first kthx`")
 
 
 @register(outgoing=True, pattern="^.botver$")
 async def bot_ver(event):
-     #Prevent Channel Bug to run botver commad
-    if event.is_channel and not event.is_group:
-        await event.edit("`botver Commad isn't permitted on channels`")
-        return
     """ For .botver command, get the bot version. """
-    if which("git") is not None:
-        invokever = "git describe --all --long"
-        ver = await asyncrunapp(
-            invokever,
-            stdout=asyncPIPE,
-            stderr=asyncPIPE,
-        )
-        stdout, stderr = await ver.communicate()
-        verout = str(stdout.decode().strip()) \
-            + str(stderr.decode().strip())
-
-        invokerev = "git rev-list --all --count"
-        rev = await asyncrunapp(
-            invokerev,
-            stdout=asyncPIPE,
-            stderr=asyncPIPE,
-        )
-        stdout, stderr = await rev.communicate()
-        revout = str(stdout.decode().strip()) \
-            + str(stderr.decode().strip())
-
-        await event.edit("`Userbot Version: "
-                         f"{verout}"
-                         "` \n"
-                         "`Revision: "
-                         f"{revout}"
-                         "`")
-    else:
-        await event.edit(
-            "Shame that you don't have git, You're running 5.0 - 'Extended' anyway"
-        )
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@",
                                                              "!"):
         if which("git") is not None:
@@ -118,19 +76,15 @@ async def bot_ver(event):
                              "` \n"
                              "`Revision: "
                              f"{revout}"
-                             "`")
+                             "` \n"
+                             "`OpenUserBot Version: 7.7.7`")
         else:
             await event.edit(
-                "Shame that you don't have git, you're running - 'v1.beta.4' anyway!"
-            )
+                "Shame that you don't have Git, you're running v1.0 anyway!")
 
 
 @register(outgoing=True, pattern="^.pip(?: |$)(.*)")
 async def pipcheck(pip):
-      #Prevent Channel Bug to run pip commad
-    if pip.is_channel and not pip.is_group:
-        await pip.edit("`pip Commad isn't permitted on channels`")
-        return
     """ For .pip command, do a pip search. """
     if not pip.text[0].isalpha() and pip.text[0] not in ("/", "#", "@", "!"):
         pipmodule = pip.pattern_match.group(1)
@@ -162,41 +116,54 @@ async def pipcheck(pip):
                     remove("output.txt")
                     return
                 await pip.edit("**Query: **\n`"
-                               f"pip3 search {pipmodule}"
+                               f"{invokepip}"
                                "`\n**Result: **\n`"
                                f"{pipout}"
                                "`")
             else:
                 await pip.edit("**Query: **\n`"
-                               f"pip3 search {pipmodule}"
+                               f"{invokepip}"
                                "`\n**Result: **\n`No Result Returned/False`")
         else:
             await pip.edit("`Use .help pip to see an example`")
+            
 
-
-@register(outgoing=True, pattern=r"^\.(?:live|on)\s?(.)?")
+@register(outgoing=True, pattern="^.alive$")
 async def amireallyalive(alive):
-    #Prevent Channel Bug to run alive commad
-    if alive.is_channel and not alive.is_group:
-        await alive.edit("`alive Commad isn't permitted on channels`")
-        return
     """ For .alive command, check if the bot is running.  """
-    await alive.edit("running on __sql-extended__ \n"  
-                     "----------------------------------------\n"    
-                     "`Bot Version Info` \n"
-                  f"`Telethon : v{version.__version__} `\n"
-                  f"`Python  : v{python_version()} `\n"
-                     "----------------------------------------\n"
-                  f"`User : `{DEFAULTUSER} \n\n"
-                   "`All modules loaded with (0) errors`")
+    await alive.edit(
+          "𝗜'𝗠 𝗔𝗧 𝗬𝗢𝗨𝗥 𝗦𝗘𝗥𝗩𝗜𝗖𝗘 𝗛𝗔𝗥𝗘𝗠 𝗞𝗜𝗡𝗚 \n"
+        f"-------------------------------- \n"
+         "⣼⣯⠄⣸⣠⣶⣶⣦⣾⠄⠄⠄⠄⡀⠄⢀⣿⣿⠄⠄⠄⢸⡇ \n"
+         "⠿⠿⠶⠿⢿⣿⣿⣿⣿⣦⣤⣄⢀⡅⢠⣾⣛⡉⠄⠄⠄⠸⢀ \n"
+         "⣴⣶⣶⡀⠄⠄⠙⢿⣿⣿⣿⣿⣿⣴⣿⣿⣿⢃⣤⣄⣀⣥⣿ \n"
+         "⣿⣿⣿⣧⣀⢀⣠⡌⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠿⣿⣿ \n"
+         "⣤⣤⣤⣬⣙⣛⢿⣿⣿⣿⣿⣿⣿⡿⣿⣿⡍⠄⠄⢀⣤⣄⠉ \n"
+         "⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⢇⣿⣿⡷⠶⠶⢿⣿⣿⠇ \n"
+         "⣿⣿⣿⣿⣿⣿⣿⣿⣽⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⣷⣶⣥⣴ \n"
+         "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ \n"
+         "⣻⣿⣿⣧⠙⠛⠛⡭⠅⠒⠦⠭⣭⡻⣿⣿⣿⣿⣿⣿⣿⣿⡿ \n"
+         "⣿⣿⣿⣿⡆⠄⠄⠄⠄⠄⠄⠄⠄⠹⠈⢋⣽⣿⣿⣿⣿⣵⣾ \n"
+         "⣿⣿⣿⣿⣿⠄⣴⣿⣶⣄⠄⣴⣶⠄⢀⣾⣿⣿⣿⣿⣿⣿⠃ \n"
+         "⣿⣿⣿⣿⣿⡄⢻⣿⣿⣿⠄⣿⣿⡀⣾⣿⣿⣿⣿⣛⠛⠁⠄ \n"
+         "⠛⢿⣿⣿⣿⠁⠞⢿⣿⣿⡄⢿⣿⡇⣸⣿⣿⠿⠛⠁⠄⠄⠄ \n"
+         "⠄⠄⠉⠻⣿⣿⣾⣦⡙⠻⣷⣾⣿⠃⠿⠋⠁⠄⠄⠄⠄⠄⢀ \n"
+         "⣮⣥⣒⠲⢮⣝⡿⣿⣿⡆⣿⡿⠃⠄⠄⠄⠄⠄⠄⠄⣠⣴⣿ \n"
+        f"-------------------------------- \n"
+                     f" `🔧Telethon version`: {version.__version__} \n"
+                     f"🐍 `Python`: {python_version()} \n"
+         f"𝙊𝙬𝙣𝙚𝙧 - @DeletedUser420 \n"
+                    
+                     f"𝖀𝖘𝖊𝖗: {DEFAULTUSER}\n" 
+         f"--------------------------------"
+        )
+        
+        
+                   
 
 
 @register(outgoing=True, pattern="^.aliveu")
 async def amireallyaliveuser(username):
-    #Prevent Channel Bug to run aliveu commad
-    if username.is_channel and not username.is_group:
-        await username.edit("`aliveu Commad isn't permitted on channels`")
-        return
     """ For .aliveu command, change the username in the .alive command. """
     message = username.text
     output = '.aliveu [new user without brackets] nor can it be empty'
@@ -210,10 +177,6 @@ async def amireallyaliveuser(username):
 
 @register(outgoing=True, pattern="^.resetalive$")
 async def amireallyalivereset(ureset):
-    #Prevent Channel Bug to run resetalive commad
-    if ureset.is_channel and not ureset.is_group:
-        await ureset.edit("`resetalive Commad isn't permitted on channels`")
-        return
     """ For .resetalive command, reset the username in the .alive command. """
     global DEFAULTUSER
     DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
@@ -229,9 +192,9 @@ CMD_HELP.update(
     {"pip": ".pip <module(s)>\
     \nUsage: Does a search of pip modules(s)."})
 CMD_HELP.update({
-    "on":
-    ".live | .on\
-    \nUsage: Type .on or .alive to see wether your bot is working or not.\
+    "alive":
+    ".alive\
+    \nUsage: Type .alive to see wether your bot is working or not.\
     \n\n.aliveu <text>\
     \nUsage: Changes the 'user' in alive to the text you want.\
     \n\n.resetalive\
